@@ -17,6 +17,8 @@ jobs:
         run: find . -type f -name ".env.example" -exec sh -c 'cp "$1" "${:"' _ {} \;
 
       - name: Set up SQLite database
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL || '' }}
         run: |
           mkdir -p ./prisma
           touch ./prisma/dev.db
@@ -35,5 +37,4 @@ jobs:
       - name: Build
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL || '' }}
-
         run: pnpm build
