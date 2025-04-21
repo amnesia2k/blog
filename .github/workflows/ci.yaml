@@ -24,6 +24,6 @@ jobs:
 
       - name: Build
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL || '' }} # 👈 Uses the secret
+          DATABASE_URL: ${{ secrets.DATABASE_URL || '' }}
 
         run: pnpm build
