@@ -24,6 +24,8 @@ jobs:
           touch ./prisma/dev.db
 
       - name: Run Prisma migrations
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL || '' }}
         run: |
           pnpm prisma migrate deploy
           pnpm prisma generate
