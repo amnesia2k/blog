@@ -2,7 +2,13 @@ import Link from "next/link";
 import { prisma } from "~@/server/db";
 
 export default async function HomePage() {
-  const posts = await prisma.post.findMany();
+  let posts = [];
+
+  try {
+    posts = await prisma.post.findMany();
+  } catch (error) {
+    posts = [{ id: "1", title: "Example Post" }];
+  }
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">

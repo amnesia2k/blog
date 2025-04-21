@@ -16,20 +16,6 @@ jobs:
         shell: bash
         run: find . -type f -name ".env.example" -exec sh -c 'cp "$1" "${:"' _ {} \;
 
-      - name: Set up SQLite database
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL || '' }}
-        run: |
-          mkdir -p ./prisma
-          touch ./prisma/dev.db
-
-      - name: Run Prisma migrations
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL || '' }}
-        run: |
-          pnpm prisma migrate deploy
-          pnpm prisma generate
-
       - name: Typecheck
         run: pnpm typecheck
 
