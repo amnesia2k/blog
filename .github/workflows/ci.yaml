@@ -1,0 +1,29 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install Deps
+        run: npm install -g pnpm && pnpm install
+
+      - name: Copy .env.example files
+        shell: bash
+        run: find . -type f -name ".env.example" -exec sh -c 'cp "$1" "${:"' _ {} \;
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Check Formatting
+        run: pnpm check:write
+
+      - name: Build
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL || '' }} # 👈 Uses the secret
+
+        run: pnpm build
