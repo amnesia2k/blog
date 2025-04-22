@@ -1,14 +1,14 @@
 import Link from "next/link";
-import { prisma } from "~@/server/db";
+// import { prisma } from "~@/server/db";
 
 export default async function HomePage() {
-  let posts = [];
+  // let posts = [];
 
-  try {
-    posts = await prisma.post.findMany();
-  } catch (error) {
-    posts = [{ id: "1", title: "Example Post" }];
-  }
+  // try {
+  //   posts = await prisma.post.findMany();
+  // } catch (error) {
+  //   posts = [{ id: "1", title: "Example Post" }];
+  // }
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
@@ -42,7 +42,7 @@ export default async function HomePage() {
         </div>
       </div>
 
-      <div className="flex flex-col gap-y-4">
+      {/* <div className="flex flex-col gap-y-4">
         {posts.map((post) => (
           <Link
             href={`/post/${post?.id}`}
@@ -52,7 +52,7 @@ export default async function HomePage() {
             {post?.title}
           </Link>
         ))}
-      </div>
+      </div> */}
     </main>
   );
 }
