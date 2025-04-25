@@ -1,8 +1,33 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { Search } from "./icons/Search";
+import { usePathname } from "next/navigation";
+
+const navbarLinks = [
+  {
+    id: 1,
+    name: "Home",
+    href: "/",
+  },
+
+  {
+    id: 2,
+    name: "Blogs",
+    href: "/blogs",
+  },
+
+  {
+    id: 3,
+    name: "Contact Us",
+    href: "/contact",
+  },
+];
 
 export default function Navbar() {
+  const pathname = usePathname();
+
   return (
     <header className="bg-white py-4 shadow-xs">
       <div className="max-w-[1200px] mx-auto flex items-center justify-between">
@@ -21,36 +46,19 @@ export default function Navbar() {
         </Link>
 
         <nav className="hidden md:flex items-center space-x-6">
-          <Link
-            href="/"
-            className="text-gray-800 hover:text-blue-600 transition-colors"
-          >
-            Home
-          </Link>
-          <Link
-            href="/blog"
-            className="text-gray-800 hover:text-blue-600 transition-colors"
-          >
-            Blog
-          </Link>
-          <Link
-            href="/blog/single-post"
-            className="text-gray-800 hover:text-blue-600 transition-colors"
-          >
-            Single Post
-          </Link>
-          <Link
-            href="/pages"
-            className="text-gray-800 hover:text-blue-600 transition-colors"
-          >
-            Pages
-          </Link>
-          <Link
-            href="/contact"
-            className="text-gray-800 hover:text-blue-600 transition-colors"
-          >
-            Contact
-          </Link>
+          {navbarLinks.map((link) => (
+            <Link
+              key={link?.id}
+              href={link?.href}
+              className={`hover:text-blue-600 transition-colors ${
+                pathname === link?.href
+                  ? "text-blue-600 font-bold"
+                  : "text-gray-800"
+              }`}
+            >
+              {link?.name}
+            </Link>
+          ))}
         </nav>
 
         <div className="flex items-center space-x-2">

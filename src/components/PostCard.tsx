@@ -5,7 +5,7 @@ import type { Post } from "~@/types/blog";
 export default function PostCard({ post }: { post: Post }) {
   return (
     <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
-      <Link href={`/blog/${post.slug}`} className="block relative h-48 w-full">
+      <Link href={`/blogs/${post.slug}`} className="block relative h-48 w-full">
         <Image
           src={post.coverImage || "/placeholder.svg"}
           alt={post.title}
@@ -20,8 +20,8 @@ export default function PostCard({ post }: { post: Post }) {
       </Link>
 
       <div className="p-4">
-        <Link href={`/blog/${post.slug}`}>
-          <h3 className="text-lg font-semibold mb-2 hover:text-blue-600 transition-colors">
+        <Link href={`/blogs/${post.slug}`}>
+          <h3 className="text-lg font-semibold mb-2 hover:text-blue-600 transition-colors line-clamp-2">
             {post.title}
           </h3>
         </Link>
