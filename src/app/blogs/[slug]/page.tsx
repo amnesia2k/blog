@@ -7,6 +7,15 @@ import { generatePostMetadata } from "~@/lib/metadata";
 import ShareButtons from "~@/components/share-buttons";
 import SanitizedHTML from "~@/components/sanitized-html";
 
+// interface Props {
+//   params: {
+//     slug: string;
+//   };
+//   searchParams?: {
+//     [key: string]: string | string[] | undefined;
+//   };
+// }
+
 interface Props {
   params: {
     slug: string;
