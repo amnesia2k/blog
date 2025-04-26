@@ -94,9 +94,18 @@ export async function getCategoryBySlug(slug: string) {
   });
 }
 
+interface MetadataProps {
+  // Using a different name to avoid confusion
+  params: {
+    slug: string;
+  };
+}
+
 // Generate post metadata
-export async function generatePostMetadata(slug: string): Promise<Metadata> {
-  const post = (await getPostBySlug(slug)) as Post;
+export async function generatePostMetadata({
+  params,
+}: MetadataProps): Promise<Metadata> {
+  const post = (await getPostBySlug(params.slug)) as Post;
 
   if (!post) {
     return {
@@ -119,7 +128,7 @@ export async function generatePostMetadata(slug: string): Promise<Metadata> {
       type: "article",
       title: title,
       description: description,
-      url: `https://metablog.example.com/blog/${slug}`,
+      url: `https://metablog.example.com/blog/${params.slug}`,
       images: [
         {
           url: coverImage,
