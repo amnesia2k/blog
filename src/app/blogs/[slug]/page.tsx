@@ -16,12 +16,12 @@ interface Props {
   };
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  return generatePostMetadata({ params }); // Pass the whole object
-}
+// export async function generateMetadata({ params }: Props): Promise<Metadata> {
+//   return generatePostMetadata({ params }); // Pass the whole object
+// }
 
 export default function SinglePostPage({ params }: Props) {
-  const post = posts.find((post) => post.slug === params.slug);
+  const post = posts.find((post) => post.slug === params?.slug);
 
   if (!post) {
     return <div>Post not found</div>;
