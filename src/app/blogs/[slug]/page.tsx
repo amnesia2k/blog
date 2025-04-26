@@ -1,11 +1,13 @@
-import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { posts } from "~@/lib/data";
 import { Facebook, Twitter, Linkedin } from "~@/components/icons/SocialIcons";
-import { generatePostMetadata } from "~@/lib/metadata";
 import ShareButtons from "~@/components/share-buttons";
 import SanitizedHTML from "~@/components/sanitized-html";
+import { generatePostMetadata } from "~@/lib/metadata";
+import type { Metadata } from "next";
+
+export const dynamic = "force-dynamic";
 
 interface Props {
   params: {
@@ -17,11 +19,16 @@ interface Props {
 }
 
 // export async function generateMetadata({ params }: Props): Promise<Metadata> {
-//   return generatePostMetadata({ params }); // Pass the whole object
+//   return generatePostMetadata(params.slug); // Pass the whole object
 // }
 
-export default function SinglePostPage({ params }: Props) {
-  const post = posts.find((post) => post.slug === params?.slug);
+export default async function SinglePostPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const post = posts.find((p) => p.slug === slug);
 
   if (!post) {
     return <div>Post not found</div>;
