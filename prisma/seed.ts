@@ -1,0 +1,101 @@
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
+
+async function main() {
+  console.log("🌱 Seeding started...");
+  // Create Users
+  const user1 = await prisma.user.create({
+    data: {
+      clerkId: "clerk_123",
+      role: "user",
+    },
+  });
+
+  const user2 = await prisma.user.create({
+    data: {
+      clerkId: "clerk_456",
+      role: "author",
+    },
+  });
+
+  // Create AuthorProfile for user2
+  const authorProfile = await prisma.authorProfile.create({
+    data: {
+      // name: 'Jane Doe',
+      bio: "Tech enthusiast and writer.",
+      twitterLink: "https://twitter.com/janedoe",
+      user: {
+        connect: { id: user2.id },
+      },
+    },
+  });
+
+  // Link user2 to their profile
+  await prisma.user.update({
+    where: { id: user2.id },
+    data: { profileId: authorProfile.id },
+  });
+
+  // Create some tags
+  const tag1 = await prisma.tag.create({ data: { tagName: "React" } });
+  const tag2 = await prisma.tag.create({ data: { tagName: "NextJS" } });
+  const tag3 = await prisma.tag.create({ data: { tagName: "Prisma" } });
+
+  // Create posts
+  const post1 = await prisma.post.create({
+    data: {
+      title: "Getting Started with React",
+      slug: "getting-started-react",
+      content: "React is a JavaScript library for building user interfaces...",
+      author: { connect: { id: user2.id } },
+      profile: { connect: { id: authorProfile.id } },
+      tags: {
+        create: [
+          { tag: { connect: { id: tag1.id } } },
+          { tag: { connect: { id: tag2.id } } },
+        ],
+      },
+    },
+  });
+
+  const post2 = await prisma.post.create({
+    data: {
+      title: "NextJS and Prisma",
+      slug: "nextjs-prisma",
+      content: "NextJS makes server-side rendering easy...",
+      author: { connect: { id: user2.id } },
+      profile: { connect: { id: authorProfile.id } },
+      tags: {
+        create: [
+          { tag: { connect: { id: tag2.id } } },
+          { tag: { connect: { id: tag3.id } } },
+        ],
+      },
+    },
+  });
+
+  // Add likes
+  await prisma.like.createMany({
+    data: [
+      { userId: user1.id, postId: post1.id },
+      { userId: user1.id, postId: post2.id },
+    ],
+  });
+
+  // Add bookmarks
+  await prisma.bookmark.createMany({
+    data: [{ userId: user1.id, postId: post2.id }],
+  });
+
+  console.log("Seeding complete!");
+}
+
+main()
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });
