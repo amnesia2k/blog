@@ -1,1 +1,1 @@
-export default function middleware(req, res, next) {}
+export default function middleware() {}
