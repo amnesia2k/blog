@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { posts } from "~@/lib/data";
-import PostCard from "~@/components/PostCard";
+import PostCard from "~@/components/post-card";
 import {
   Facebook,
   Twitter,

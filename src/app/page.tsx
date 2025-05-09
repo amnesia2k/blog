@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import FeaturedPost from "~@/components/FeaturedPost";
-import PostCard from "~@/components/PostCard";
+import FeaturedPost from "~@/components/featured-post";
+import PostCard from "~@/components/post-card";
 import { posts } from "~@/lib/data";
 import { baseMetadata } from "~@/lib/metadata";
 

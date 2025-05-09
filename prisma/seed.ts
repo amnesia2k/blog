@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 
 async function main() {
   console.log("🌱 Seeding started...");
-  // Create Users
+
   const user1 = await prisma.user.create({
     data: {
       clerkId: "clerk_123",
@@ -19,7 +19,6 @@ async function main() {
     },
   });
 
-  // Create AuthorProfile for user2
   const authorProfile = await prisma.authorProfile.create({
     data: {
       // name: 'Jane Doe',
