@@ -1,10 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Post } from "~@/types/blog";
+import { Card } from "./ui/card";
 
 export default function PostCard({ post }: { post: Post }) {
   return (
-    <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
+    <Card className="rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 p-0">
       <Link href={`/blogs/${post.slug}`} className="block relative h-48 w-full">
         <Image
           src={post.coverImage || "/placeholder.svg"}
@@ -45,6 +46,6 @@ export default function PostCard({ post }: { post: Post }) {
           <span>{post.date}</span>
         </div>
       </div>
-    </div>
+    </Card>
   );
 }

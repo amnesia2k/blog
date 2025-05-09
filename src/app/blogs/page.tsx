@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import PostCard from "~@/components/PostCard";
+import PostCard from "~@/components/post-card";
 import { posts, categories } from "~@/lib/data";
 import { baseMetadata } from "~@/lib/metadata";
 

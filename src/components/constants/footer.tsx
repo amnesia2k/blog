@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Facebook, Twitter, Instagram, Linkedin } from "./icons/SocialIcons";
+import { Facebook, Twitter, Instagram, Linkedin } from "../icons/SocialIcons";
 
 export default function Footer() {
   return (
