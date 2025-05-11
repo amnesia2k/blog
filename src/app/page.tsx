@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import CustomButton from "~@/components/button";
 import FeaturedPost from "~@/components/featured-post";
 import PostCard from "~@/components/post-card";
 import { posts } from "~@/lib/data";
@@ -47,7 +48,7 @@ export default function Home() {
       </div>
 
       {/* Newsletter */}
-      <div className="bg-gray-100 p-8 rounded-lg">
+      <div className="p-8 dark:border shadow-xl dark:border-gray-500 rounded-lg">
         <div className="max-w-2xl mx-auto text-center">
           <h2 className="text-2xl font-bold mb-4">
             Subscribe to our Newsletter
@@ -55,19 +56,16 @@ export default function Home() {
           <p className="text-gray-600 mb-6">
             Get the latest posts delivered right to your inbox
           </p>
-          <form className="flex flex-col sm:flex-row gap-2">
+          <form className="flex flex-col items-center sm:flex-row gap-2">
             <input
               type="email"
               placeholder="Your email address"
               className="grow px-4 py-2 rounded-md border border-gray-300 focus:outline-hidden focus:ring-2 focus:ring-blue-500"
               required
             />
-            <button
-              type="submit"
-              className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors"
-            >
+            <CustomButton variant="outline" type="submit" className="px-6 py-5">
               Subscribe
-            </button>
+            </CustomButton>
           </form>
         </div>
       </div>

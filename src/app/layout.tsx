@@ -19,7 +19,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.className}`}>
+      <body className={`${inter.className} px-4 overflow-none`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

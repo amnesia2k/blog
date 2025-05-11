@@ -34,21 +34,31 @@ model AuthorProfile {
 }
 
 model Post {
-    id        String         @id @default(cuid())
-    title     String
-    slug      String         @unique
-    excerpt   String?
-    content   Json
-    published Boolean        @default(false)
-    createdAt DateTime       @default(now())
-    updatedAt DateTime       @updatedAt
-    author    User           @relation("AuthorPosts", fields: [authorId], references: [id])
-    authorId  String
-    profile   AuthorProfile? @relation("AuthorProfilePosts", fields: [profileId], references: [id])
-    profileId String?
-    tags      PostTag[]
-    likes     Like[]
-    bookmarks Bookmark[]
+    id         String         @id @default(cuid())
+    title      String
+    slug       String         @unique
+    excerpt    String?
+    content    String
+    imageUrl   String
+    published  Boolean        @default(false)
+    createdAt  DateTime       @default(now())
+    updatedAt  DateTime       @updatedAt
+    author     User           @relation("AuthorPosts", fields: [authorId], references: [id])
+    authorId   String
+    profile    AuthorProfile? @relation("AuthorProfilePosts", fields: [profileId], references: [id])
+    profileId  String?
+    tags       PostTag[]
+    likes      Like[]
+    bookmarks  Bookmark[]
+    category   Category?      @relation(fields: [categoryId], references: [id])
+    categoryId String?
+}
+
+model Category {
+    id    String @id @default(cuid())
+    name  String @unique
+    slug  String @unique
+    posts Post[]
 }
 
 model Tag {
