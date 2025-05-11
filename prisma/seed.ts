@@ -47,6 +47,7 @@ async function main() {
       title: "Getting Started with React",
       slug: "getting-started-react",
       content: "React is a JavaScript library for building user interfaces...",
+      imageUrl: "https://example.com/image1.jpg",
       author: { connect: { id: user2.id } },
       profile: { connect: { id: authorProfile.id } },
       tags: {
@@ -63,6 +64,7 @@ async function main() {
       title: "NextJS and Prisma",
       slug: "nextjs-prisma",
       content: "NextJS makes server-side rendering easy...",
+      imageUrl: "https://example.com/image1.jpg",
       author: { connect: { id: user2.id } },
       profile: { connect: { id: authorProfile.id } },
       tags: {
@@ -72,6 +74,38 @@ async function main() {
         ],
       },
     },
+  });
+
+  // Create some categories
+  const category1 = await prisma.category.create({
+    data: {
+      name: "Technology",
+      slug: "technology",
+      posts: {
+        connect: [{ id: post1.id }],
+      },
+    },
+  });
+
+  const category2 = await prisma.category.create({
+    data: {
+      name: "Marketing",
+      slug: "marketing",
+      posts: {
+        connect: [{ id: post2.id }],
+      },
+    },
+  });
+
+  // Update posts to connect them to categories
+  await prisma.post.update({
+    where: { id: post1.id },
+    data: { categoryId: category1.id },
+  });
+
+  await prisma.post.update({
+    where: { id: post2.id },
+    data: { categoryId: category2.id },
   });
 
   // Add likes

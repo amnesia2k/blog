@@ -4,7 +4,7 @@ import { Facebook, Twitter, Instagram, Linkedin } from "../icons/SocialIcons";
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-100 pt-16 pb-8">
+    <footer className="pt-16 pb-8">
       <div className="max-w-[1200px] mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
@@ -21,21 +21,21 @@ export default function Footer() {
                 Meta<span className="text-blue-600">Blog</span>
               </span>
             </Link>
-            <p className="text-gray-600 mb-6">
+            <p className="mb-6">
               A modern blog platform for sharing ideas, stories, and knowledge
               with the world.
             </p>
             <div className="flex space-x-4">
-              <a href="https://" className="text-gray-600 hover:text-blue-600">
+              <a href="https://" className="hover:text-blue-600">
                 <Facebook className="w-5 h-5" />
               </a>
-              <a href="https://" className="text-gray-600 hover:text-blue-600">
+              <a href="https://" className="hover:text-blue-600">
                 <Twitter className="w-5 h-5" />
               </a>
-              <a href="https://" className="text-gray-600 hover:text-blue-600">
+              <a href="https://" className="hover:text-blue-600">
                 <Instagram className="w-5 h-5" />
               </a>
-              <a href="https://" className="text-gray-600 hover:text-blue-600">
+              <a href="https://" className="hover:text-blue-600">
                 <Linkedin className="w-5 h-5" />
               </a>
             </div>
@@ -45,39 +45,27 @@ export default function Footer() {
             <h3 className="text-lg font-semibold mb-6">Quick Links</h3>
             <ul className="space-y-3">
               <li>
-                <Link href="/" className="text-gray-600 hover:text-blue-600">
+                <Link href="/" className="hover:text-blue-600">
                   Home
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/blog"
-                  className="text-gray-600 hover:text-blue-600"
-                >
+                <Link href="/blog" className="hover:text-blue-600">
                   Blog
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/categories"
-                  className="text-gray-600 hover:text-blue-600"
-                >
+                <Link href="/categories" className="hover:text-blue-600">
                   Categories
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/about"
-                  className="text-gray-600 hover:text-blue-600"
-                >
+                <Link href="/about" className="hover:text-blue-600">
                   About Us
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/contact"
-                  className="text-gray-600 hover:text-blue-600"
-                >
+                <Link href="/contact" className="hover:text-blue-600">
                   Contact
                 </Link>
               </li>
@@ -90,7 +78,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/categories/technology"
-                  className="text-gray-600 hover:text-blue-600"
+                  className="hover:text-blue-600"
                 >
                   Technology
                 </Link>
@@ -98,32 +86,26 @@ export default function Footer() {
               <li>
                 <Link
                   href="/categories/lifestyle"
-                  className="text-gray-600 hover:text-blue-600"
+                  className="hover:text-blue-600"
                 >
                   Lifestyle
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/categories/travel"
-                  className="text-gray-600 hover:text-blue-600"
-                >
+                <Link href="/categories/travel" className="hover:text-blue-600">
                   Travel
                 </Link>
               </li>
               <li>
                 <Link
                   href="/categories/business"
-                  className="text-gray-600 hover:text-blue-600"
+                  className="hover:text-blue-600"
                 >
                   Business
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/categories/health"
-                  className="text-gray-600 hover:text-blue-600"
-                >
+                <Link href="/categories/health" className="hover:text-blue-600">
                   Health & Wellness
                 </Link>
               </li>
@@ -132,7 +114,7 @@ export default function Footer() {
 
           <div>
             <h3 className="text-lg font-semibold mb-6">Subscribe</h3>
-            <p className="text-gray-600 mb-4">
+            <p className="mb-4">
               Subscribe to our newsletter to get the latest updates directly in
               your inbox.
             </p>
@@ -153,7 +135,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-gray-200 mt-12 pt-8 text-center text-gray-600">
+        <div className="border-t border-gray-200 mt-12 pt-8 text-center">
           <p>© {new Date().getFullYear()} MetaBlog. All rights reserved.</p>
         </div>
       </div>

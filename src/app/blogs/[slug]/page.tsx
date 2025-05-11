@@ -4,19 +4,19 @@ import { posts } from "~@/lib/data";
 import { Facebook, Twitter, Linkedin } from "~@/components/icons/SocialIcons";
 import ShareButtons from "~@/components/share-buttons";
 import SanitizedHTML from "~@/components/sanitized-html";
-import { generatePostMetadata } from "~@/lib/metadata";
-import type { Metadata } from "next";
+// import { generatePostMetadata } from "~@/lib/metadata";
+// import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
 
-interface Props {
-  params: {
-    slug: string;
-  };
-  searchParams?: {
-    [key: string]: string | string[] | undefined;
-  };
-}
+// interface Props {
+//   params: {
+//     slug: string;
+//   };
+//   searchParams?: {
+//     [key: string]: string | string[] | undefined;
+//   };
+// }
 
 // export async function generateMetadata({ params }: Props): Promise<Metadata> {
 //   return generatePostMetadata(params.slug); // Pass the whole object
@@ -93,7 +93,7 @@ export default async function SinglePostPage({
           </article>
 
           {/* Tags - Now using actual post tags */}
-          {post.tags && post.tags.length > 0 && (
+          {/* {post.tags && post.tags.length > 0 && (
             <div className="mb-8">
               <h3 className="text-lg font-semibold mb-4">Tags</h3>
               <div className="flex flex-wrap gap-2">
@@ -101,14 +101,14 @@ export default async function SinglePostPage({
                   <Link
                     key={tag}
                     href={`/tags/${tag.toLowerCase()}`}
-                    className="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full hover:bg-gray-200"
+                    className="px-3 py-1 text-gray-700 text-sm rounded-full cursor-pointer"
                   >
                     {tag}
                   </Link>
                 ))}
               </div>
             </div>
-          )}
+          )} */}
 
           {/* Share */}
           <div className="mb-8">
@@ -117,7 +117,7 @@ export default async function SinglePostPage({
           </div>
 
           {/* Author Bio - Only show this once */}
-          <div className="bg-gray-100 p-6 rounded-lg mb-8">
+          <div className="p-6 rounded-lg mb-8">
             <div className="flex items-start space-x-4">
               <div className="relative h-16 w-16 rounded-full overflow-hidden shrink-0">
                 <Image
@@ -132,14 +132,14 @@ export default async function SinglePostPage({
                 <h3 className="text-lg font-semibold mb-2">
                   {post.author.name}
                 </h3>
-                <p className="text-gray-600 mb-4">
+                <p className="mb-4">
                   {post.author.bio || "Writer and content creator"}
                 </p>
                 <div className="flex space-x-3">
                   {post.author.socialLinks?.facebook && (
                     <a
                       href={post.author.socialLinks.facebook}
-                      className="text-gray-600 hover:text-blue-600"
+                      className="hover:text-blue-600"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -149,7 +149,7 @@ export default async function SinglePostPage({
                   {post.author.socialLinks?.twitter && (
                     <a
                       href={post.author.socialLinks.twitter}
-                      className="text-gray-600 hover:text-blue-600"
+                      className=" hover:text-blue-600"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -159,7 +159,7 @@ export default async function SinglePostPage({
                   {post.author.socialLinks?.linkedin && (
                     <a
                       href={post.author.socialLinks.linkedin}
-                      className="text-gray-600 hover:text-blue-600"
+                      className=" hover:text-blue-600"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -296,7 +296,7 @@ export default async function SinglePostPage({
 
         <div className="lg:col-span-1">
           {/* Related Posts */}
-          <div className="bg-white p-6 rounded-lg shadow-xs">
+          <div className="p-6 rounded-lg shadow-xl dark:border dark:border-gray-500">
             <h3 className="text-lg font-semibold mb-4">Related Posts</h3>
             <div className="space-y-4">
               {relatedPosts.map((relatedPost) => (

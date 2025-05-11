@@ -5,6 +5,10 @@ import Image from "next/image";
 import { Search } from "../icons/Search";
 import { usePathname } from "next/navigation";
 import { ModeToggle } from "../theme-toggle";
+import { Menu } from "lucide-react";
+import MobileSidebar from "../mobile-sidebar";
+import { useEffect, useRef, useState } from "react";
+// import UploadWidget from "../upload-widget";
 
 const navbarLinks = [
   {
@@ -28,6 +32,34 @@ const navbarLinks = [
 
 export default function Navbar() {
   const pathname = usePathname();
+  const [isOpen, setIsOpen] = useState(false);
+  const sidebarRef = useRef<HTMLDivElement>(null);
+
+  const toggleMenu = () => {
+    setIsOpen((prev) => !prev);
+  };
+
+  // Close menu when clicking outside the sidebar
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        sidebarRef.current &&
+        !sidebarRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
 
   return (
     <header className="py-4 shadow-xs">
@@ -42,7 +74,7 @@ export default function Navbar() {
             />
           </div>
           <span className="text-xl font-bold">
-            Meta<span className="text-primary">Blog</span>
+            Meta<span className="text-blue-600">Blog</span>
           </span>
         </Link>
 
@@ -51,8 +83,8 @@ export default function Navbar() {
             <Link
               key={link?.id}
               href={link?.href}
-              className={`hover:text-primary transition-colors ${
-                pathname === link?.href ? "text-primary font-bold" : ""
+              className={`hover:text-blue-400 transition-colors ${
+                pathname === link?.href ? "text-blue-600 font-bold" : ""
               }`}
             >
               {link?.name}
@@ -61,7 +93,7 @@ export default function Navbar() {
         </nav>
 
         <div className="flex items-center space-x-2">
-          <div className="relative">
+          {/* <div className="relative">
             <input
               type="text"
               placeholder="Search"
@@ -73,27 +105,27 @@ export default function Navbar() {
             >
               <Search className="w-4 h-4 text-gray-500" />
             </button>
+          </div> */}
+          {/* <UploadWidget /> */}
+          <div className="hidden md:block">
+            <ModeToggle />
           </div>
-          <ModeToggle />
-          <button type="button" className="md:hidden">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              aria-hidden="true"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            </svg>
+          <button
+            type="button"
+            onClick={toggleMenu}
+            className="md:hidden cursor-pointer"
+          >
+            <Menu size={30} />
           </button>
         </div>
       </div>
+
+      {/* Mobile sidebar */}
+      <MobileSidebar
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        links={navbarLinks}
+      />
     </header>
   );
 }

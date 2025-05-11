@@ -1,3 +1,4 @@
+import { Search } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import PostCard from "~@/components/post-card";
@@ -31,7 +32,7 @@ export default function BlogPage() {
     <div className="max-w-[1200px] mx-auto py-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">Blog</h1>
-        <div className="flex items-center text-sm text-gray-600">
+        <div className="flex items-center text-sm">
           <Link href="/" className="hover:text-blue-600">
             Home
           </Link>
@@ -87,7 +88,7 @@ export default function BlogPage() {
 
         <div className="lg:col-span-1">
           {/* Search */}
-          <div className="bg-white p-6 rounded-lg shadow-xs mb-6">
+          <div className="dark:border p-6 shadow-xl rounded-lg mb-6">
             <h3 className="text-lg font-semibold mb-4">Search</h3>
             <div className="relative">
               <input
@@ -99,34 +100,20 @@ export default function BlogPage() {
                 type="button"
                 className="absolute right-3 top-1/2 transform -translate-y-1/2"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 text-gray-400"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                  />
-                </svg>
+                <Search />
               </button>
             </div>
           </div>
 
           {/* Categories */}
-          <div className="bg-white p-6 rounded-lg shadow-xs mb-6">
+          <div className="p-6 rounded-lg shadow-xl dark:border mb-6">
             <h3 className="text-lg font-semibold mb-4">Categories</h3>
             <ul className="space-y-2">
               {categories.map((category) => (
                 <li key={category.id}>
                   <Link
                     href={`/categories/${category.slug}`}
-                    className="flex justify-between items-center text-gray-700 hover:text-blue-600"
+                    className="flex justify-between items-center hover:text-blue-600"
                   >
                     <span>{category.name}</span>
                     <span className="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded-full">
@@ -139,13 +126,13 @@ export default function BlogPage() {
           </div>
 
           {/* Recent Posts */}
-          <div className="bg-white p-6 rounded-lg shadow-xs mb-6">
+          <div className="p-6 rounded-lg shadow-xl dark:border mb-6">
             <h3 className="text-lg font-semibold mb-4">Recent Posts</h3>
             <ul className="space-y-4">
               {posts.slice(0, 5).map((post) => (
                 <li key={post.id} className="flex space-x-3">
                   <div className="shrink-0 w-16 h-16 relative">
-                    <Link href={`/blog/${post.slug}`}>
+                    <div>
                       <div className="absolute inset-0">
                         <img
                           src={post.coverImage || "/placeholder.svg"}
@@ -153,7 +140,7 @@ export default function BlogPage() {
                           className="object-cover w-full h-full rounded"
                         />
                       </div>
-                    </Link>
+                    </div>
                   </div>
                   <div>
                     <Link
@@ -170,7 +157,7 @@ export default function BlogPage() {
           </div>
 
           {/* Tags */}
-          <div className="bg-white p-6 rounded-lg shadow-xs">
+          <div className="p-6 rounded-lg shadow-xl dark:border mb-6">
             <h3 className="text-lg font-semibold mb-4">Tags</h3>
             <div className="flex flex-wrap gap-2">
               <a
