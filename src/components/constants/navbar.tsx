@@ -2,12 +2,22 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Search } from "../icons/Search";
+// import { Search } from "../icons/Search";
 import { usePathname } from "next/navigation";
 import { ModeToggle } from "../theme-toggle";
-import { Menu } from "lucide-react";
+import { Menu, User } from "lucide-react";
 import MobileSidebar from "../mobile-sidebar";
 import { useEffect, useRef, useState } from "react";
+import {
+  ClerkLoaded,
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  SignUpButton,
+  UserButton,
+  useUser,
+} from "@clerk/nextjs";
+import { Button } from "../ui/button";
 // import UploadWidget from "../upload-widget";
 
 const navbarLinks = [
@@ -34,6 +44,7 @@ export default function Navbar() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const sidebarRef = useRef<HTMLDivElement>(null);
+  const { user } = useUser();
 
   const toggleMenu = () => {
     setIsOpen((prev) => !prev);
@@ -107,8 +118,34 @@ export default function Navbar() {
             </button>
           </div> */}
           {/* <UploadWidget /> */}
-          <div className="hidden md:block">
+          <div className="hidden md:flex items-center space-x-2">
             <ModeToggle />
+
+            <ClerkLoaded>
+              <SignedIn>
+                <UserButton />
+              </SignedIn>
+
+              {user ? (
+                <div className="flex items-center space-x-2">
+                  <UserButton />
+
+                  <div className="hidden sm:block text-xs">
+                    <p className="italic">Welcome Back</p>
+                    <p className="font-bold">{user?.fullName}</p>
+                  </div>
+                </div>
+              ) : (
+                <SignInButton mode="modal">
+                  <Button
+                    variant="ghost"
+                    className="rounded-full border w-10 h-10 cursor-pointer"
+                  >
+                    <User />
+                  </Button>
+                </SignInButton>
+              )}
+            </ClerkLoaded>
           </div>
           <button
             type="button"

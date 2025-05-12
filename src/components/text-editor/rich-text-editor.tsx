@@ -1,13 +1,13 @@
 "use client";
 
-import React from "react";
+import React, { useImperativeHandle, forwardRef } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import TextAlign from "@tiptap/extension-text-align";
 import Highlight from "@tiptap/extension-highlight";
 import MenuBar from "./menu-bar";
 
-export default function RichTextEditor() {
+const RichTextEditor = forwardRef((_, ref) => {
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -34,12 +34,13 @@ export default function RichTextEditor() {
         class: "min-h-[200px] border rounded-md py-2 px-3 text-sm lg:text-base",
       },
     },
-
-    onUpdate: ({ editor }) => {
-      const html = editor.getHTML();
-      console.log("Editor content in HTML format:", html);
-    },
   });
+
+  useImperativeHandle(ref, () => ({
+    getHTML: () => editor?.getHTML() ?? "",
+  }));
+
+  if (!editor) return null;
 
   return (
     <div>
@@ -47,4 +48,7 @@ export default function RichTextEditor() {
       <EditorContent editor={editor} />
     </div>
   );
-}
+});
+
+RichTextEditor.displayName = "RichTextEditor";
+export default RichTextEditor;

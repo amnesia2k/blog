@@ -25,4 +25,5 @@ jobs:
       - name: Build
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL || '' }}
+          NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || '' }}
         run: pnpm build
