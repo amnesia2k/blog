@@ -5,23 +5,30 @@ const prisma = new PrismaClient();
 async function main() {
   console.log("🌱 Seeding started...");
 
+  // Create User 1 (Regular User)
   const user1 = await prisma.user.create({
     data: {
       clerkId: "clerk_123",
+      email: "user1@example.com", // Adding email
+      imageUrl: "https://example.com/user1.jpg", // Adding imageUrl
       role: "user",
     },
   });
 
+  // Create User 2 (Author)
   const user2 = await prisma.user.create({
     data: {
       clerkId: "clerk_456",
+      email: "author@example.com", // Adding email
+      imageUrl: "https://example.com/author.jpg", // Adding imageUrl
       role: "author",
     },
   });
 
+  // Create Author Profile for User 2
   const authorProfile = await prisma.authorProfile.create({
     data: {
-      // name: 'Jane Doe',
+      name: "Jane Doe", // Adding name
       bio: "Tech enthusiast and writer.",
       twitterLink: "https://twitter.com/janedoe",
       user: {
@@ -30,7 +37,7 @@ async function main() {
     },
   });
 
-  // Link user2 to their profile
+  // Link User 2 to their Profile
   await prisma.user.update({
     where: { id: user2.id },
     data: { profileId: authorProfile.id },

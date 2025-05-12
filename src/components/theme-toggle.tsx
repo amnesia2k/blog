@@ -16,10 +16,9 @@ export function ModeToggle() {
   return (
     <Button
       onClick={toggleTheme}
-      variant="outline"
-      size="icon"
+      variant="ghost"
       aria-label="Toggle theme"
-      className="rounded-full bg-transparent hover:bg-transparent"
+      className="rounded-full border w-10 h-10 cursor-pointer"
     >
       {/* <span className="sr-only">Toggle theme</span> */}
       {theme === "light" ? <Moon /> : <Sun />}

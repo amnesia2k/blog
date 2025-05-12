@@ -48,7 +48,7 @@ export default function Home() {
       </div>
 
       {/* Newsletter */}
-      <div className="p-8 dark:border shadow-xl dark:border-gray-500 rounded-lg">
+      <div className="p-8 border shadow-xl rounded-lg">
         <div className="max-w-2xl mx-auto text-center">
           <h2 className="text-2xl font-bold mb-4">
             Subscribe to our Newsletter

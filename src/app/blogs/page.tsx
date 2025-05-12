@@ -52,34 +52,19 @@ export default function BlogPage() {
           {/* Pagination */}
           <div className="flex justify-center mt-12">
             <nav className="inline-flex">
-              <a
-                href="https://"
-                className="px-3 py-2 rounded-l-md border border-gray-300 bg-white text-gray-500 hover:bg-gray-50"
-              >
+              <a href="https://" className="px-3 py-2 rounded-l-md border">
                 Previous
               </a>
-              <a
-                href="https://"
-                className="px-3 py-2 border-t border-b border-gray-300 bg-white text-blue-600 hover:bg-blue-50"
-              >
+              <a href="https://" className="px-3 py-2 border text-blue-600">
                 1
               </a>
-              <a
-                href="https://"
-                className="px-3 py-2 border-t border-b border-gray-300 bg-white text-gray-500 hover:bg-gray-50"
-              >
+              <a href="https://" className="px-3 py-2 border">
                 2
               </a>
-              <a
-                href="https://"
-                className="px-3 py-2 border-t border-b border-gray-300 bg-white text-gray-500 hover:bg-gray-50"
-              >
+              <a href="https://" className="px-3 py-2 border">
                 3
               </a>
-              <a
-                href="https://"
-                className="px-3 py-2 rounded-r-md border border-gray-300 bg-white text-gray-500 hover:bg-gray-50"
-              >
+              <a href="https://" className="px-3 py-2 rounded-r-md border">
                 Next
               </a>
             </nav>
@@ -88,7 +73,7 @@ export default function BlogPage() {
 
         <div className="lg:col-span-1">
           {/* Search */}
-          <div className="dark:border p-6 shadow-xl rounded-lg mb-6">
+          <div className="border p-6 shadow-xl rounded-lg mb-6">
             <h3 className="text-lg font-semibold mb-4">Search</h3>
             <div className="relative">
               <input
@@ -106,7 +91,7 @@ export default function BlogPage() {
           </div>
 
           {/* Categories */}
-          <div className="p-6 rounded-lg shadow-xl dark:border mb-6">
+          <div className="p-6 rounded-lg shadow-xl border mb-6">
             <h3 className="text-lg font-semibold mb-4">Categories</h3>
             <ul className="space-y-2">
               {categories.map((category) => (
@@ -126,7 +111,7 @@ export default function BlogPage() {
           </div>
 
           {/* Recent Posts */}
-          <div className="p-6 rounded-lg shadow-xl dark:border mb-6">
+          <div className="p-6 rounded-lg shadow-xl border mb-6">
             <h3 className="text-lg font-semibold mb-4">Recent Posts</h3>
             <ul className="space-y-4">
               {posts.slice(0, 5).map((post) => (
@@ -157,7 +142,7 @@ export default function BlogPage() {
           </div>
 
           {/* Tags */}
-          <div className="p-6 rounded-lg shadow-xl dark:border mb-6">
+          <div className="p-6 rounded-lg shadow-xl border mb-6">
             <h3 className="text-lg font-semibold mb-4">Tags</h3>
             <div className="flex flex-wrap gap-2">
               <a

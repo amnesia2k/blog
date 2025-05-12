@@ -1,10 +1,12 @@
 import "~@/styles/globals.css";
 
 import type { Metadata } from "next";
-import { Geist, Inter } from "next/font/google";
+import { Inter } from "next/font/google";
 import { ThemeProvider } from "~@/components/themeprovider";
 import Navbar from "~@/components/constants/navbar";
 import Footer from "~@/components/constants/footer";
+import { ClerkProvider } from "@clerk/nextjs";
+import { shadesOfPurple } from "@clerk/themes";
 
 export const metadata: Metadata = {
   title: "Create T3 App",
@@ -18,19 +20,21 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.className} px-4 overflow-none`}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <Navbar />
-          <main className="min-h-screen">{children}</main>
-          <Footer />
-        </ThemeProvider>
-      </body>
-    </html>
+    <ClerkProvider appearance={{ baseTheme: shadesOfPurple }}>
+      <html lang="en" suppressHydrationWarning>
+        <body className={`${inter.className} px-4 overflow-none`}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <Navbar />
+            <main className="min-h-screen">{children}</main>
+            <Footer />
+          </ThemeProvider>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
