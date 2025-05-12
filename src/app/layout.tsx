@@ -23,7 +23,9 @@ export default function RootLayout({
 
   return (
     <ClerkProvider
-      appearance={{ baseTheme: shadesOfPurple }}
+      appearance={{
+        baseTheme: shadesOfPurple,
+      }}
       publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
     >
       <html lang="en" suppressHydrationWarning>

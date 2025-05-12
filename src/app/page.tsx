@@ -16,12 +16,12 @@ export default function Home() {
   const featuredPost = posts[0];
   const latestPosts = posts.slice(0, 6);
 
-  const url =
-    process.env.NODE_ENV === "development"
-      ? `http://localhost:${process.env.PORT}`
-      : `https://${process.env.URL}`;
+  // const url =
+  //   process.env.NODE_ENV === "development"
+  //     ? `http://localhost:${process.env.PORT}`
+  //     : `https://${process.env.URL}`;
 
-  console.log(url);
+  // console.log(url);
 
   return (
     <div className="max-w-[1200px] mx-auto py-8">
