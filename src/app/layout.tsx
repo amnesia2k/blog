@@ -19,8 +19,13 @@ const inter = Inter({ subsets: ["latin"] });
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  if (!process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY) return null;
+
   return (
-    <ClerkProvider appearance={{ baseTheme: shadesOfPurple }}>
+    <ClerkProvider
+      appearance={{ baseTheme: shadesOfPurple }}
+      publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
+    >
       <html lang="en" suppressHydrationWarning>
         <body className={`${inter.className} px-4 overflow-none`}>
           <ThemeProvider
