@@ -122,13 +122,15 @@ export default function Navbar() {
             <ModeToggle />
 
             <ClerkLoaded>
-              <SignedIn>
-                <UserButton />
-              </SignedIn>
-
               {user ? (
                 <div className="flex items-center space-x-2">
-                  <UserButton />
+                  <UserButton
+                    appearance={{
+                      elements: {
+                        avatarBox: "outline-none",
+                      },
+                    }}
+                  />
 
                   <div className="hidden sm:block text-xs">
                     <p className="italic">Welcome Back</p>

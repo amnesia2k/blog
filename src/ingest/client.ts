@@ -1,3 +1,4 @@
+import { clerkClient } from "@clerk/express";
 import { Inngest } from "inngest";
 import { prisma } from "~@/server/db";
 
@@ -54,8 +55,27 @@ export const syncUserCreation = inngest.createFunction(
     event: "clerk/user.created",
   },
   async ({ event }) => {
+    const { id } = event.data;
     try {
       await syncUserData(event.data);
+
+      try {
+        console.log("Creating Clerk metadata...");
+        await clerkClient.users.updateUserMetadata(id, {
+          publicMetadata: {
+            role: "user",
+          },
+        });
+
+        console.log(
+          `Successfully set publicMetadata.role = "user" for Clerk user ${id}`
+        );
+      } catch (error) {
+        console.error(
+          `Error setting publicMetadata.role for Clerk user ${id}:`,
+          error
+        );
+      }
     } catch (error) {
       console.error("Error syncing user creation:", error);
     } finally {

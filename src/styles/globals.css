@@ -58,6 +58,26 @@
     padding: 0.125rem 0.25rem;
     border-radius: 0.25rem;
   }
+
+  .cl-avatarBox {
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  /* .cl-avatarBox:focus {
+    outline: none !important;
+    box-shadow: none !important;
+  } */
+
+  /* .cl-userButtonBox:focus {
+    outline: none !important;
+    box-shadow: none !important;
+  } */
+
+  /* .cl-userButtonAvatarBox:focus {
+    outline: none !important;
+    box-shadow: none !important;
+  } */
 }
 
 @theme inline {
