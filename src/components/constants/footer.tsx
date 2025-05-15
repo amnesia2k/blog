@@ -1,9 +1,14 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { Facebook, Twitter, Instagram, Linkedin } from "../icons/SocialIcons";
 import BecomeAuthor from "../become-author";
+import { useUser } from "@clerk/nextjs";
 
 export default function Footer() {
+  const { user } = useUser();
+
   return (
     <footer className="pt-16 pb-8">
       <div className="max-w-[1200px] mx-auto">
@@ -42,7 +47,7 @@ export default function Footer() {
             </div>
 
             <div>
-              <BecomeAuthor />
+              {user?.unsafeMetadata?.role === "user" && <BecomeAuthor />}
             </div>
           </div>
 

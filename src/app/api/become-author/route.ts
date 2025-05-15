@@ -4,15 +4,6 @@ import { NextResponse } from "next/server";
 import { prisma } from "~@/server/db";
 
 export async function POST(request: Request) {
-  function generateUserId() {
-    const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
-    let id = "";
-    for (let i = 0; i < 10; i++) {
-      id += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return id;
-  }
-
   try {
     const { userId } = await auth();
 
@@ -29,8 +20,6 @@ export async function POST(request: Request) {
 
     const { name, bio, twitterLink, instagramLink, linkedinLink } = body;
 
-    const userIdd = `mba-${generateUserId()}`;
-
     if (!name) {
       return NextResponse.json(
         { success: false, error: "Name is required" },
@@ -40,7 +29,7 @@ export async function POST(request: Request) {
 
     // 1. Update Clerk user role
     await clerkClient.users.updateUser(userId, {
-      publicMetadata: {
+      unsafeMetadata: {
         role: "author",
       },
     });
@@ -53,6 +42,17 @@ export async function POST(request: Request) {
       },
     });
 
+    const dbUser = await prisma.user.findUnique({
+      where: { clerkId: userId },
+    });
+
+    if (!dbUser) {
+      return NextResponse.json(
+        { success: false, error: "User not found in DB." },
+        { status: 404 }
+      );
+    }
+
     // 3. Create authorProfile
     await prisma.authorProfile.create({
       data: {
@@ -61,7 +61,7 @@ export async function POST(request: Request) {
         twitterLink,
         instagramLink,
         linkedinLink,
-        userId: userIdd,
+        userId: dbUser.id,
       },
     });
 

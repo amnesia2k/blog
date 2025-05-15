@@ -110,7 +110,7 @@ export default function Navbar() {
                     },
                   }}
                 >
-                  {user?.publicMetadata?.role === "author" && (
+                  {user?.unsafeMetadata?.role === "author" && (
                     <UserButton.MenuItems>
                       <UserButton.Link
                         label="New Post"
