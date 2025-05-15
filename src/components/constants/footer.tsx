@@ -1,14 +1,15 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Facebook, Twitter, Instagram, Linkedin } from "../icons/SocialIcons";
+import BecomeAuthor from "../become-author";
 
 export default function Footer() {
   return (
     <footer className="pt-16 pb-8">
       <div className="max-w-[1200px] mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          <div>
-            <Link href="/" className="flex items-center space-x-2 mb-6">
+          <div className="space-y-6">
+            <Link href="/" className="flex items-center space-x-2 ">
               <div className="relative h-8 w-8">
                 <Image
                   src="/logo.svg"
@@ -21,7 +22,7 @@ export default function Footer() {
                 Meta<span className="text-blue-600">Blog</span>
               </span>
             </Link>
-            <p className="mb-6">
+            <p>
               A modern blog platform for sharing ideas, stories, and knowledge
               with the world.
             </p>
@@ -38,6 +39,10 @@ export default function Footer() {
               <a href="https://" className="hover:text-blue-600">
                 <Linkedin className="w-5 h-5" />
               </a>
+            </div>
+
+            <div>
+              <BecomeAuthor />
             </div>
           </div>
 
