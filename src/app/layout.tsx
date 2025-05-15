@@ -8,6 +8,7 @@ import Footer from "~@/components/constants/footer";
 import { ClerkProvider } from "@clerk/nextjs";
 import { shadesOfPurple } from "@clerk/themes";
 import { Toaster } from "sonner";
+import RoleWrapper from "~@/components/role-guard";
 // import RolePrompt from "~@/components/role-prompt";
 
 export const metadata: Metadata = {
@@ -45,11 +46,11 @@ export default function RootLayout({
             <div className="hidden md:block">
               <Toaster richColors position="top-right" />
             </div>
-            {/* <RolePrompt> */}
-            <Navbar />
-            <main className="min-h-screen">{children}</main>
-            <Footer />
-            {/* </RolePrompt> */}
+            <RoleWrapper>
+              <Navbar />
+              <main className="min-h-screen">{children}</main>
+              <Footer />
+            </RoleWrapper>
           </ThemeProvider>
         </body>
       </html>
