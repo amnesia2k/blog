@@ -31,7 +31,7 @@ model AuthorProfile {
     twitterLink   String?
     instagramLink String?
     linkedinLink  String?
-    user          User    @relation("UserAuthorProfile", fields: [userId], references: [id])
+    user          User    @relation("UserAuthorProfile", fields: [userId], references: [id], onDelete: Cascade)
     userId        String  @unique
     posts         Post[]  @relation("AuthorProfilePosts")
 }

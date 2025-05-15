@@ -25,6 +25,7 @@ export default function BecomeAuthor() {
   }>({ loading: false, error: null });
   const router = useRouter();
   const closeRef = useRef<HTMLButtonElement | null>(null);
+  const formRef = useRef<HTMLFormElement | null>(null);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -55,6 +56,8 @@ export default function BecomeAuthor() {
       }
 
       toast.success("You're now an author ✍️");
+      setFormState({ loading: false, error: null }); // 👈 Add this
+      formRef.current?.reset();
       router.refresh();
       closeRef.current?.click(); // Manually close the sheet
     } catch (error) {
@@ -82,7 +85,7 @@ export default function BecomeAuthor() {
           </SheetDescription>
         </SheetHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-4 px-5">
+        <form ref={formRef} onSubmit={handleSubmit} className="space-y-4 px-5">
           <div className="space-y-2">
             <Label htmlFor="name">Display Name</Label>
             <Input
@@ -137,8 +140,12 @@ export default function BecomeAuthor() {
             <Button type="submit" disabled={formState.loading}>
               {formState.loading ? "Submitting..." : "Submit Application"}
             </Button>
-            {/* Hidden button to close sheet manually after success */}
-            <button type="button" className="hidden" ref={closeRef} />
+
+            <SheetClose asChild>
+              {/* Hidden button to close sheet manually after success */}
+              {/* biome-ignore lint/style/useSelfClosingElements: <explanation> */}
+              <button type="button" className="hidden" ref={closeRef}></button>
+            </SheetClose>
           </SheetFooter>
         </form>
       </SheetContent>

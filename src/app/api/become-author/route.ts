@@ -54,7 +54,7 @@ export async function POST(request: Request) {
     }
 
     // 3. Create authorProfile
-    await prisma.authorProfile.create({
+    const createdProfile = await prisma.authorProfile.create({
       data: {
         name,
         bio,
@@ -62,6 +62,14 @@ export async function POST(request: Request) {
         instagramLink,
         linkedinLink,
         userId: dbUser.id,
+      },
+    });
+
+    // 4. Update User/Author relationship
+    await prisma.user.update({
+      where: { id: dbUser.id },
+      data: {
+        profileId: createdProfile.id,
       },
     });
 
