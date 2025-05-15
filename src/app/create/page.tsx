@@ -1,16 +1,34 @@
 // app/(blog)/create/page.tsx or wherever you're routing
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import RichTextEditor from "~@/components/text-editor/rich-text-editor";
 import { createPost } from "~@/server/actions"; // we'll write this next
+import { useUser } from "@clerk/nextjs";
+import { toast } from "sonner";
 
 export default function CreateBlogPage() {
   const router = useRouter();
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const editorRef = useRef<any>(null);
   const [formState, setFormState] = useState({ loading: false, error: null });
+  const { user, isLoaded } = useUser();
+
+  // 🚫 if user is not an author, redirect to home
+  useEffect(() => {
+    if (isLoaded) {
+      const role = user?.publicMetadata?.role;
+      if (role !== "author") {
+        toast.warning("You do not have access for this action!");
+        router.push("/");
+      }
+    }
+  }, [user, isLoaded, router]);
+
+  // ⛔ Don't render the form if user is not loaded or not author
+  const role = user?.publicMetadata?.role;
+  if (!isLoaded || role !== "author") return null;
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -30,6 +48,12 @@ export default function CreateBlogPage() {
       router.push("/"); // or wherever you list posts
     }
   }
+
+  const checkUserRole = async () => {
+    const userRole = user;
+
+    console.log(userRole);
+  };
 
   return (
     <div className="max-w-3xl mx-auto py-8 space-y-6">
@@ -82,6 +106,10 @@ export default function CreateBlogPage() {
           <p className="text-red-500 text-sm">{formState.error}</p>
         )}
       </form>
+
+      <button type="button" onClick={checkUserRole}>
+        Check User Role
+      </button>
     </div>
   );
 }

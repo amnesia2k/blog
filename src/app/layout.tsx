@@ -7,6 +7,8 @@ import Navbar from "~@/components/constants/navbar";
 import Footer from "~@/components/constants/footer";
 import { ClerkProvider } from "@clerk/nextjs";
 import { shadesOfPurple } from "@clerk/themes";
+import { Toaster } from "sonner";
+// import RolePrompt from "~@/components/role-prompt";
 
 export const metadata: Metadata = {
   title: "Create T3 App",
@@ -36,9 +38,18 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
+            <div className="md:hidden">
+              <Toaster richColors position="top-center" />
+            </div>
+
+            <div className="hidden md:block">
+              <Toaster richColors position="top-right" />
+            </div>
+            {/* <RolePrompt> */}
             <Navbar />
             <main className="min-h-screen">{children}</main>
             <Footer />
+            {/* </RolePrompt> */}
           </ThemeProvider>
         </body>
       </html>

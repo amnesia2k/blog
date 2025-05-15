@@ -5,18 +5,10 @@ import Image from "next/image";
 // import { Search } from "../icons/Search";
 import { usePathname } from "next/navigation";
 import { ModeToggle } from "../theme-toggle";
-import { Menu, User } from "lucide-react";
+import { Menu, Plus, User } from "lucide-react";
 import MobileSidebar from "../mobile-sidebar";
 import { useEffect, useRef, useState } from "react";
-import {
-  ClerkLoaded,
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  SignUpButton,
-  UserButton,
-  useUser,
-} from "@clerk/nextjs";
+import { ClerkLoaded, SignInButton, UserButton, useUser } from "@clerk/nextjs";
 import { Button } from "../ui/button";
 // import UploadWidget from "../upload-widget";
 
@@ -104,51 +96,48 @@ export default function Navbar() {
         </nav>
 
         <div className="flex items-center space-x-2">
-          {/* <div className="relative">
-            <input
-              type="text"
-              placeholder="Search"
-              className="pl-3 pr-10 py-1.5 rounded-full border text-sm focus:outline-hidden w-32 md:w-48"
-            />
-            <button
-              type="button"
-              className="absolute right-3 top-1/2 transform -translate-y-1/2"
-            >
-              <Search className="w-4 h-4 text-gray-500" />
-            </button>
-          </div> */}
-          {/* <UploadWidget /> */}
           <div className="hidden md:flex items-center space-x-2">
             <ModeToggle />
-
-            <ClerkLoaded>
-              {user ? (
-                <div className="flex items-center space-x-2">
-                  <UserButton
-                    appearance={{
-                      elements: {
-                        avatarBox: "outline-none",
-                      },
-                    }}
-                  />
-
-                  <div className="hidden sm:block text-xs">
-                    <p className="italic">Welcome Back</p>
-                    <p className="font-bold">{user?.fullName}</p>
-                  </div>
-                </div>
-              ) : (
-                <SignInButton mode="modal">
-                  <Button
-                    variant="ghost"
-                    className="rounded-full border w-10 h-10 cursor-pointer"
-                  >
-                    <User />
-                  </Button>
-                </SignInButton>
-              )}
-            </ClerkLoaded>
           </div>
+
+          <ClerkLoaded>
+            {user ? (
+              <div className="flex items-center space-x-2">
+                <UserButton
+                  appearance={{
+                    elements: {
+                      avatarBox: "outline-none",
+                    },
+                  }}
+                >
+                  {user?.publicMetadata?.role === "author" && (
+                    <UserButton.MenuItems>
+                      <UserButton.Link
+                        label="New Post"
+                        labelIcon={<Plus size={15} />}
+                        href="/create"
+                      />
+                    </UserButton.MenuItems>
+                  )}
+                </UserButton>
+
+                <div className="hidden sm:block text-xs">
+                  <p className="italic">Welcome Back</p>
+                  <p className="font-bold">{user?.fullName}</p>
+                </div>
+              </div>
+            ) : (
+              <SignInButton mode="modal">
+                <Button
+                  variant="ghost"
+                  className="rounded-full border w-10 h-10 cursor-pointer"
+                >
+                  <User />
+                </Button>
+              </SignInButton>
+            )}
+          </ClerkLoaded>
+
           <button
             type="button"
             onClick={toggleMenu}
@@ -167,4 +156,25 @@ export default function Navbar() {
       />
     </header>
   );
+}
+
+// biome-ignore lint/complexity/noUselessLoneBlockStatements: <explanation>
+{
+  /* <div className="relative">
+            <input
+              type="text"
+              placeholder="Search"
+              className="pl-3 pr-10 py-1.5 rounded-full border text-sm focus:outline-hidden w-32 md:w-48"
+            />
+            <button
+              type="button"
+              className="absolute right-3 top-1/2 transform -translate-y-1/2"
+            >
+              <Search className="w-4 h-4 text-gray-500" />
+            </button>
+          </div> */
+}
+// biome-ignore lint/complexity/noUselessLoneBlockStatements: <explanation>
+{
+  /* <UploadWidget /> */
 }
