@@ -54,13 +54,10 @@ export const syncUserCreation = inngest.createFunction(
     event: "clerk/user.created",
   },
   async ({ event }) => {
-    const { id } = event.data;
     try {
       await syncUserData(event.data);
     } catch (error) {
       console.error("Error syncing user creation:", error);
-    } finally {
-      await prisma.$disconnect();
     }
   }
 );
@@ -78,8 +75,6 @@ export const syncUserUpdate = inngest.createFunction(
       await syncUserData(event.data);
     } catch (error) {
       console.error("Error syncing user update:", error);
-    } finally {
-      await prisma.$disconnect();
     }
   }
 );
@@ -93,17 +88,26 @@ export const syncUserDeletion = inngest.createFunction(
     event: "clerk/user.deleted",
   },
   async ({ event }) => {
-    const { id } = event.data;
+    const { id: clerkId } = event.data;
 
     try {
-      await prisma.user.delete({
-        where: { clerkId: id },
-      });
-      console.log(`User with clerkId ${id} deleted from DB`);
+      // Find the user first (optional, for logging)
+      const user = await prisma.user.findUnique({ where: { clerkId } });
+
+      if (!user) {
+        console.warn(`User with clerkId ${clerkId} not found in DB.`);
+        return;
+      }
+
+      // Delete user, profile will cascade delete
+      await prisma.user.delete({ where: { clerkId } });
+
+      console.log(`✅ Deleted user and related profile for clerkId ${clerkId}`);
     } catch (error) {
-      console.error(`Error deleting user with clerkId ${id}:`, error);
-    } finally {
-      await prisma.$disconnect();
+      console.error(
+        `❌ Error deleting user or profile for clerkId ${clerkId}:`,
+        error
+      );
     }
   }
 );
