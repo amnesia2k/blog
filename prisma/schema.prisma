@@ -46,7 +46,7 @@ model Post {
     published  Boolean        @default(false)
     createdAt  DateTime       @default(now())
     updatedAt  DateTime       @updatedAt
-    author     User           @relation("AuthorPosts", fields: [authorId], references: [id])
+    author     User           @relation("AuthorPosts", fields: [authorId], references: [clerkId])
     authorId   String
     profile    AuthorProfile? @relation("AuthorProfilePosts", fields: [profileId], references: [id])
     profileId  String?

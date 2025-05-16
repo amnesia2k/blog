@@ -1,12 +1,20 @@
-// app/(blog)/create/page.tsx or wherever you're routing
 "use client";
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import RichTextEditor from "~@/components/text-editor/rich-text-editor";
-import { createPost } from "~@/server/actions"; // we'll write this next
 import { useUser } from "@clerk/nextjs";
 import { toast } from "sonner";
+import { Input } from "~@/components/ui/input";
+import RichTextEditor from "~@/components/text-editor/rich-text-editor";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "~@/components/ui/select";
+import { Label } from "~@/components/ui/label";
+import TagsInput from "~@/components/tags-input";
 
 export default function CreateBlogPage() {
   const router = useRouter();
@@ -15,10 +23,10 @@ export default function CreateBlogPage() {
   const [formState, setFormState] = useState({ loading: false, error: null });
   const { user, isLoaded } = useUser();
 
-  // 🚫 if user is not an author, redirect to home
+  // 🚫 Redirect non-authors
   useEffect(() => {
     if (isLoaded) {
-      const role = user?.publicMetadata?.role;
+      const role = user?.unsafeMetadata?.role;
       if (role !== "author") {
         toast.warning("You do not have access for this action!");
         router.push("/");
@@ -26,74 +34,116 @@ export default function CreateBlogPage() {
     }
   }, [user, isLoaded, router]);
 
-  // ⛔ Don't render the form if user is not loaded or not author
-  const role = user?.publicMetadata?.role;
+  const role = user?.unsafeMetadata?.role;
   if (!isLoaded || role !== "author") return null;
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
 
-    // add TipTap content to FormData
+    // Get editor content
     const editorContent = editorRef.current?.getHTML();
     formData.append("content", editorContent || "");
 
     setFormState({ loading: true, error: null });
 
-    const result = await createPost(formData);
+    try {
+      const response = await fetch("/api/create-blog", {
+        method: "POST",
+        body: formData,
+      });
 
-    if (result?.error) {
-      setFormState({ loading: false, error: result.error });
-    } else {
-      router.push("/"); // or wherever you list posts
+      console.log("Response status:", response.status);
+
+      const result = await response.json();
+
+      console.log("API response:", result);
+
+      if (response.ok && result.success) {
+        toast.success("Post published!");
+        router.push("/");
+      } else {
+        // Show detailed error message if available
+        toast.error(result.details || result.error || "Failed to create post");
+        const errorMsg = result.error || "Failed to create post";
+        const detailedMsg = result.details ? `: ${result.details}` : "";
+        throw new Error(errorMsg + detailedMsg);
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error(err instanceof Error ? err.message : "Something went wrong.");
+    } finally {
+      setFormState({ loading: false, error: null });
     }
   }
 
-  const checkUserRole = async () => {
-    const userRole = user;
-
-    console.log(userRole);
-  };
-
   return (
     <div className="max-w-3xl mx-auto py-8 space-y-6">
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input
+      <form
+        onSubmit={handleSubmit}
+        className="space-y-4"
+        encType="multipart/form-data"
+      >
+        {/* Title */}
+        <Input
           type="text"
           name="title"
-          placeholder="Title"
+          placeholder="Post title"
           required
-          className="w-full p-2 border rounded"
+          className="w-full p-2"
         />
-        <input
+
+        {/* Slug */}
+        <Input
           type="text"
           name="slug"
-          placeholder="Slug"
+          placeholder="Custom slug (e.g. react-server-actions)"
           required
-          className="w-full p-2 border rounded"
+          className="w-full p-2"
         />
-        <input
+
+        {/* Excerpt */}
+        <Input
           type="text"
           name="excerpt"
-          placeholder="Excerpt"
-          className="w-full p-2 border rounded"
+          placeholder="Optional excerpt (for previews, SEO)"
+          className="w-full p-2"
         />
-        <input
-          type="url"
-          name="imageUrl"
-          placeholder="Image URL"
-          required
-          className="w-full p-2 border rounded"
-        />
-        <input
-          type="text"
-          name="categoryId"
-          placeholder="Category ID"
-          className="w-full p-2 border rounded"
-        />
-        {/* Rich Text Editor */}
-        <RichTextEditor ref={editorRef} />
 
+        {/* Image upload */}
+        <Input
+          type="file"
+          name="imageUrl"
+          accept="image/*"
+          required
+          className="w-full"
+        />
+
+        {/* Category selection (Shadcn Select) */}
+        <div className="w-full">
+          <Label className="text-sm font-medium mb-1 block">Category</Label>
+          <Select name="categoryId">
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select a category" />
+            </SelectTrigger>
+            <SelectContent>
+              {/* TODO: Dynamically load categories */}
+              <SelectItem value="catid-1">Tech</SelectItem>
+              <SelectItem value="catid-2">Lifestyle</SelectItem>
+              <SelectItem value="catid-3">Travel</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        <TagsInput name="tags" />
+
+        {/* Rich Text Editor */}
+        <div>
+          <Label className="text-sm font-medium mb-1 block">Content</Label>
+          <RichTextEditor ref={editorRef} />
+        </div>
+
+        {/* Submit Button */}
         <button
           type="submit"
           className="bg-black text-white py-2 px-4 rounded hover:bg-gray-800"
@@ -106,10 +156,6 @@ export default function CreateBlogPage() {
           <p className="text-red-500 text-sm">{formState.error}</p>
         )}
       </form>
-
-      <button type="button" onClick={checkUserRole}>
-        Check User Role
-      </button>
     </div>
   );
 }

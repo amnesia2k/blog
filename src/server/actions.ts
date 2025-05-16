@@ -18,7 +18,8 @@ export async function createPost(formData: FormData) {
     if (!authorId) throw new Error("Not authenticated");
 
     // 👇 Log the data being sent to Prisma
-    console.log("Creating post with data:", {
+
+    const data = {
       title,
       slug,
       excerpt,
@@ -27,7 +28,9 @@ export async function createPost(formData: FormData) {
       authorId,
       categoryId,
       published: true,
-    });
+    };
+
+    console.log("Creating post with data:", data);
 
     // const post = await prisma.post.create({
     //   data: {
@@ -43,6 +46,9 @@ export async function createPost(formData: FormData) {
     // });
 
     revalidatePath("/");
+
+    return { success: true, data };
+
     // return { success: true, post };
     // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   } catch (err: any) {
