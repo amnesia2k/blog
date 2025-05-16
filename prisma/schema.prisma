@@ -46,9 +46,9 @@ model Post {
     published  Boolean        @default(false)
     createdAt  DateTime       @default(now())
     updatedAt  DateTime       @updatedAt
-    author     User           @relation("AuthorPosts", fields: [authorId], references: [clerkId])
+    author     User           @relation("AuthorPosts", fields: [authorId], references: [clerkId], onDelete: Cascade)
     authorId   String
-    profile    AuthorProfile? @relation("AuthorProfilePosts", fields: [profileId], references: [id])
+    profile    AuthorProfile? @relation("AuthorProfilePosts", fields: [profileId], references: [id], onDelete: Cascade)
     profileId  String?
     tags       PostTag[]
     likes      Like[]
@@ -72,9 +72,9 @@ model Tag {
 
 model PostTag {
     id     String @id @default(cuid())
-    post   Post   @relation(fields: [postId], references: [id])
+    post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
     postId String
-    tag    Tag    @relation(fields: [tagId], references: [id])
+    tag    Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
     tagId  String
 
     @@unique([postId, tagId]) // Prevent duplicate tags on same post
@@ -82,7 +82,7 @@ model PostTag {
 
 model Like {
     id     String @id @default(cuid())
-    user   User   @relation(fields: [userId], references: [id])
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId String
     post   Post   @relation(fields: [postId], references: [id])
     postId String
@@ -92,7 +92,7 @@ model Like {
 
 model Bookmark {
     id     String @id @default(cuid())
-    user   User   @relation(fields: [userId], references: [id])
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId String
     post   Post   @relation(fields: [postId], references: [id])
     postId String
