@@ -107,6 +107,7 @@ export default function Navbar() {
                   appearance={{
                     elements: {
                       avatarBox: "outline-none",
+                      userButtonPopoverCard: "!mx-2",
                     },
                   }}
                 >
@@ -121,8 +122,8 @@ export default function Navbar() {
                   )}
                 </UserButton>
 
-                <div className="hidden sm:block text-xs">
-                  <p className="italic">Welcome Back</p>
+                <div className="hidden md:block text-xs">
+                  <p className="italic">Welcome Back,</p>
                   <p className="font-bold">{user?.fullName}</p>
                 </div>
               </div>
