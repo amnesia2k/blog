@@ -23,7 +23,7 @@ export default function MobileSidebar({
   onClose,
   links,
 }: MobileSidebarProps) {
-  const { user } = useUser();
+  const { user, isLoaded } = useUser();
   const pathname = usePathname();
 
   React.useEffect(() => {
@@ -75,10 +75,17 @@ export default function MobileSidebar({
       >
         {/* Header */}
         <div className="border-b w-full flex items-center justify-between p-4">
-          <div>
-            <p className="italic text-sm">Welcome Back,</p>
-            <p className="font-bold text-sm">{user?.fullName}</p>
-          </div>
+          {user && isLoaded ? (
+            <div>
+              <p className="italic text-sm">Welcome Back,</p>
+              <p className="font-bold text-sm">{user?.fullName}</p>
+            </div>
+          ) : (
+            <div>
+              <p className="italic text-sm">Please Sign In</p>
+            </div>
+          )}
+
           <button
             type="button"
             onClick={onClose}
