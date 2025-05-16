@@ -29,3 +29,5 @@ You can check out the [create-t3-app GitHub repository](https://github.com/t3-os
 Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
 
 ![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/amnesia2k/blog?utm_source=oss&utm_medium=github&utm_campaign=amnesia2k%2Fblog&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/66eb3da5-3bae-4c0d-aa77-061e323232d5/deploy-status)](https://app.netlify.com/projects/blog-amnesia/deploys)
