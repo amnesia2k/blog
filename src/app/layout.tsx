@@ -31,7 +31,7 @@ export default function RootLayout({
       }}
       publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
     >
-      <html lang="en" suppressHydrationWarning>
+      <html lang="en" suppressHydrationWarning className="overflow-y-scroll">
         <body className={`${inter.className} px-4 overflow-none`}>
           <ThemeProvider
             attribute="class"

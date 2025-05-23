@@ -23,6 +23,7 @@ export default function BecomeAuthor() {
     loading: boolean;
     error: string | null;
   }>({ loading: false, error: null });
+  const [open, setOpen] = useState(false);
   const router = useRouter();
   const closeRef = useRef<HTMLButtonElement | null>(null);
   const formRef = useRef<HTMLFormElement | null>(null);
@@ -70,7 +71,7 @@ export default function BecomeAuthor() {
   };
 
   return (
-    <Sheet>
+    <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
         <Button variant="outline" className="text-sm">
           Become an Author
