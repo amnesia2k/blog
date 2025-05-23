@@ -1,8 +1,28 @@
+// api/create-blog/route.ts
 import { clerkClient } from "@clerk/express";
 import { auth } from "@clerk/nextjs/server";
 import { v2 as cloudinary } from "cloudinary";
 import { NextResponse } from "next/server";
 import { prisma } from "~@/server/db";
+
+// Define an interface for the expected Cloudinary upload result
+interface CloudinaryUploadResult {
+  secure_url: string;
+  // Add other properties if you need them, e.g.:
+  // public_id: string;
+  // version: number;
+  // signature: string;
+  // width: number;
+  // height: number;
+  // format: string;
+  // resource_type: string;
+  // created_at: string;
+  // bytes: number;
+  // type: string;
+  // etag: string;
+  // url: string;
+  // original_filename: string;
+}
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -21,20 +41,19 @@ export async function POST(request: Request) {
       );
     }
 
-    // Find the internal User record using the Clerk ID
     const user = await prisma.user.findUnique({
       where: { clerkId: clerkUserId },
-      include: { profile: true }, // Optionally include the profile in one query
+      include: { profile: true },
     });
 
     if (!user) {
       return NextResponse.json(
         { success: false, error: "Internal user not found." },
-        { status: 404 } // Or 500, depending on expected state
+        { status: 404 }
       );
     }
 
-    const role = user.role; // Get role from your internal User model
+    const role = user.role;
     if (role !== "author") {
       return NextResponse.json(
         { success: false, error: "You are not authorized to create a blog!" },
@@ -42,12 +61,8 @@ export async function POST(request: Request) {
       );
     }
 
-    // fetch author profile for the current user here
-    // Use the internal User ID to find the AuthorProfile
-    // OR, if you included the profile above, use user.profile
     const authorProfile = user.profile;
 
-    // check for if no author profile
     if (!authorProfile) {
       return NextResponse.json(
         { success: false, error: "Author profile not found!" },
@@ -55,7 +70,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // logic for getting formData
     const formData = await request.formData();
 
     console.log("Received formData:", [...formData.entries()]);
@@ -63,46 +77,82 @@ export async function POST(request: Request) {
     const title = formData.get("title") as string;
     const slug = formData.get("slug") as string;
     const excerpt = formData.get("excerpt") as string | null;
-    const files = formData.getAll("imageUrl");
+    const file = formData.get("imageUrl") as File;
     const content = formData.get("content") as string;
     const categoryId = formData.get("categoryId") as string;
     const tagsJson = formData.get("tags") as string;
-    const tags: string[] = JSON.parse(tagsJson);
 
-    if (!files || files.length === 0) {
+    if (!title || !slug || !content || !categoryId || !tagsJson || !file) {
       return NextResponse.json(
-        { success: false, error: "Please upload an image." },
+        { success: false, error: "Missing required form fields." },
         { status: 400 }
       );
     }
 
-    const res = await Promise.all(
-      files.map(async (file) => {
-        if (typeof file === "string") {
-          throw new Error("Expected a file upload, but got a string.");
-        }
+    let tags: string[] = [];
+    try {
+      tags = JSON.parse(tagsJson);
+      if (!Array.isArray(tags)) {
+        throw new Error("Tags is not a valid array.");
+      }
+    } catch (parseError) {
+      console.error("Failed to parse tags JSON:", parseError);
+      return NextResponse.json(
+        { success: false, error: "Invalid tags format." },
+        { status: 400 }
+      );
+    }
+
+    let imageUrl = "";
+    if (file) {
+      try {
         const arrayBuffer = await file.arrayBuffer();
         const buffer = Buffer.from(arrayBuffer);
 
-        return new Promise((resolve, reject) => {
+        // Cast the result to the defined interface
+        const cloudinaryUploadResult = (await new Promise((resolve, reject) => {
           const stream = cloudinary.uploader.upload_stream(
             { resource_type: "auto" },
             (error, result) => {
               if (error) {
                 reject(error);
               } else {
-                resolve(result);
+                // Explicitly check if result is defined before resolving
+                if (result !== undefined) {
+                  resolve(result); // Now result is of type UploadApiResponse (which has secure_url)
+                } else {
+                  // This case should ideally not happen if there's no error,
+                  // but it's good for type safety.
+                  reject(
+                    new Error(
+                      "Cloudinary upload stream did not return a result."
+                    )
+                  );
+                }
               }
             }
           );
           stream.end(buffer);
-        });
-      })
-    );
+        })) as CloudinaryUploadResult; // Explicit cast here
 
-    const imageUrl = res.map(
-      (result) => (result as { secure_url: string }).secure_url
-    );
+        imageUrl = cloudinaryUploadResult.secure_url;
+      } catch (uploadError) {
+        console.error("Cloudinary upload error:", uploadError);
+        return NextResponse.json(
+          {
+            success: false,
+            error: "Image upload failed.",
+            details: String(uploadError),
+          },
+          { status: 500 }
+        );
+      }
+    } else {
+      return NextResponse.json(
+        { success: false, error: "No image file provided." },
+        { status: 400 }
+      );
+    }
 
     console.log("Creating post with authorId (Clerk ID):", clerkUserId);
 
@@ -111,7 +161,7 @@ export async function POST(request: Request) {
         title,
         slug,
         excerpt,
-        imageUrl: imageUrl[0] ?? "",
+        imageUrl: imageUrl,
         content,
         authorId: clerkUserId,
         profileId: authorProfile.id,
@@ -132,11 +182,27 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: true, post: newPost });
   } catch (error) {
     console.error("Error in create blog API:", error);
+    let errorMessage = "An unexpected error occurred.";
+    let errorDetails = "No specific details available.";
+
+    if (error instanceof Error) {
+      errorMessage = error.message;
+      errorDetails = error.stack || error.toString();
+    } else if (typeof error === "object" && error !== null) {
+      try {
+        errorDetails = JSON.stringify(error, Object.getOwnPropertyNames(error));
+      } catch (stringifyError) {
+        errorDetails = `Could not stringify error object: ${String(error)}`;
+      }
+    } else {
+      errorDetails = String(error);
+    }
+
     return NextResponse.json(
       {
         success: false,
-        error: "Something went wrong.",
-        details: error instanceof Error ? error.message : String(error),
+        error: errorMessage,
+        details: errorDetails,
       },
       { status: 500 }
     );

@@ -8,10 +8,11 @@ import {
   useImperativeHandle,
 } from "react";
 import Image from "next/image";
+import { useDropzone } from "react-dropzone"; // Import useDropzone
 import { cn } from "~@/lib/utils";
 
 interface ImageUploaderProps {
-  name: string;
+  // Remove name prop here if it's only used for the input name
   onFileSelect?: (file: File | null) => void;
 }
 
@@ -21,18 +22,18 @@ export interface ImageUploaderRef {
 }
 
 const ImageUploader = forwardRef<ImageUploaderRef, ImageUploaderProps>(
-  ({ name, onFileSelect }, ref) => {
+  ({ onFileSelect }, ref) => {
+    // Remove name from here
     const [selectedImage, setSelectedImage] = useState<File | null>(null);
-    const [dragActive, setDragActive] = useState(false);
 
     useImperativeHandle(ref, () => ({
       getSelectedFile: () => selectedImage,
       clearSelectedFile: () => setSelectedImage(null),
     }));
 
-    const handleFileChange = useCallback(
-      (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
+    const onDrop = useCallback(
+      (acceptedFiles: File[]) => {
+        const file = acceptedFiles[0];
         if (file) {
           setSelectedImage(file);
           onFileSelect?.(file);
@@ -44,49 +45,13 @@ const ImageUploader = forwardRef<ImageUploaderRef, ImageUploaderProps>(
       [onFileSelect]
     );
 
-    const handleDrop = useCallback(
-      (event: React.DragEvent<HTMLDivElement>) => {
-        event.preventDefault();
-        event.stopPropagation();
-        setDragActive(false);
-        const file = event.dataTransfer.files?.[0];
-        if (file) {
-          setSelectedImage(file);
-          onFileSelect?.(file);
-        } else {
-          setSelectedImage(null);
-          onFileSelect?.(null);
-        }
+    const { getRootProps, getInputProps, isDragActive } = useDropzone({
+      onDrop,
+      accept: {
+        "image/*": [],
       },
-      [onFileSelect]
-    );
-
-    const handleDragLeave = useCallback(
-      (event: React.DragEvent<HTMLDivElement>) => {
-        event.preventDefault();
-        event.stopPropagation();
-        setDragActive(false);
-      },
-      []
-    );
-
-    const handleDragOver = useCallback(
-      (event: React.DragEvent<HTMLDivElement>) => {
-        event.preventDefault();
-        event.stopPropagation();
-        setDragActive(true);
-      },
-      []
-    );
-
-    const handleDragEnter = useCallback(
-      (event: React.DragEvent<HTMLDivElement>) => {
-        event.preventDefault();
-        event.stopPropagation();
-        setDragActive(true);
-      },
-      []
-    );
+      multiple: false,
+    });
 
     const imagePreviewUrl = useMemo(() => {
       if (selectedImage) {
@@ -96,7 +61,6 @@ const ImageUploader = forwardRef<ImageUploaderRef, ImageUploaderProps>(
     }, [selectedImage]);
 
     useEffect(() => {
-      // Clean up the object URL when the component unmounts or image changes
       return () => {
         if (imagePreviewUrl) {
           URL.revokeObjectURL(imagePreviewUrl);
@@ -105,28 +69,18 @@ const ImageUploader = forwardRef<ImageUploaderRef, ImageUploaderProps>(
     }, [imagePreviewUrl]);
 
     return (
-      // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
       <div
+        {...getRootProps()}
         className={cn(
           "border-2 border-dashed rounded-md p-6 text-center cursor-pointer",
-          dragActive
+          isDragActive
             ? "border-blue-500 bg-blue-50"
             : "border-gray-300 hover:border-gray-400"
         )}
-        onDrop={handleDrop}
-        onDragOver={handleDragOver}
-        onDragEnter={handleDragEnter}
-        onDragLeave={handleDragLeave}
-        onClick={() => document.getElementById(`${name}-upload`)?.click()}
       >
-        <input
-          id={`${name}-upload`}
-          type="file"
-          name={name}
-          accept="image/*"
-          className="hidden"
-          onChange={handleFileChange}
-        />
+        {/* REMOVE name={name} from here */}
+        <input {...getInputProps()} />
+
         {selectedImage ? (
           <div>
             <Image
@@ -154,6 +108,6 @@ const ImageUploader = forwardRef<ImageUploaderRef, ImageUploaderProps>(
   }
 );
 
-ImageUploader.displayName = "ImageUploader"; // Good practice for forwardRef
+ImageUploader.displayName = "ImageUploader";
 
 export default ImageUploader;

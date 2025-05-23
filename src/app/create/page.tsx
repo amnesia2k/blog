@@ -30,7 +30,7 @@ export default function CreateBlogPage() {
 
   // 🚫 Redirect non-authors
   useEffect(() => {
-    if (isLoaded) { 
+    if (isLoaded) {
       const role = user?.unsafeMetadata?.role;
       if (role !== "author") {
         toast.warning("You do not have access to access this page!");
@@ -38,9 +38,6 @@ export default function CreateBlogPage() {
       }
     }
   }, [user, isLoaded, router]);
-
-  const role = user?.unsafeMetadata?.role;
-  if (!isLoaded || role !== "author") return null;
 
   const handleImageFileSelect = useCallback((file: File | null) => {
     setSelectedImageFile(file);
@@ -102,6 +99,11 @@ export default function CreateBlogPage() {
     [router]
   );
 
+  const role = user?.unsafeMetadata?.role;
+  if (!isLoaded || role !== "author") {
+    return null;
+  }
+
   return (
     <div className="max-w-3xl mx-auto py-8 space-y-6 px-4 sm:px-0">
       <form
@@ -160,7 +162,6 @@ export default function CreateBlogPage() {
             Featured Image
           </Label>
           <ImageUploader
-            name="imageUrl"
             ref={imageUploaderRef}
             onFileSelect={handleImageFileSelect}
           />
