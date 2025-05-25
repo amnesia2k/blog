@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import { useRef } from "react";
 import type { Editor } from "@tiptap/react";
 import {
   AlignCenter,
@@ -12,6 +12,7 @@ import {
   Heading2,
   Heading3,
   Highlighter,
+  ImagePlus,
   Italic,
   List,
   ListOrdered,
@@ -19,12 +20,68 @@ import {
   Strikethrough,
 } from "lucide-react";
 import { Toggle } from "../ui/toggle";
+import { toast } from "sonner";
 
 // interface MenuBarProps {
 //   editor: Editor | null;
 // }
 
 export default function MenuBar({ editor }: { editor: Editor | null }) {
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const handleImageUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0];
+    if (!file || !editor) return;
+
+    const formData = new FormData();
+    formData.append("image", file);
+
+    toast.promise(
+      (async () => {
+        try {
+          const res = await fetch("/api/upload-image", {
+            method: "POST",
+            body: formData,
+          });
+
+          if (!res.ok) {
+            throw new Error("Failed to upload image");
+          }
+
+          const data = await res.json();
+          const imageUrl = data?.result?.secure_url;
+
+          if (!imageUrl) {
+            throw new Error("Image URL missing from response");
+          }
+
+          editor.chain().focus().setImage({ src: imageUrl }).run();
+          return "Image uploaded successfully!";
+        } catch (err) {
+          console.error("Upload error:", err);
+          throw err;
+        }
+      })(),
+      {
+        loading: "Uploading image...",
+        success: (msg) => msg,
+        error: (err: unknown) => {
+          if (err && typeof err === "object" && "message" in err) {
+            return (
+              (err as { message?: string }).message ?? "Image upload failed!"
+            );
+          }
+          return "Image upload failed!";
+        },
+      }
+    );
+
+    // Allow same file to be selected again
+    event.target.value = "";
+  };
+
   if (!editor) {
     return null;
   }
@@ -114,6 +171,12 @@ export default function MenuBar({ editor }: { editor: Editor | null }) {
       onClick: () => editor.chain().focus().toggleOrderedList().run(),
       pressed: editor.isActive("orderedList"),
     },
+    {
+      id: 15,
+      icon: <ImagePlus size={16} />,
+      onClick: () => fileInputRef.current?.click(),
+      pressed: false, // Images aren’t toggle-able like bold, so keep this false
+    },
   ];
 
   return (
@@ -127,6 +190,14 @@ export default function MenuBar({ editor }: { editor: Editor | null }) {
           {option?.icon}
         </Toggle>
       ))}
+
+      <input
+        type="file"
+        accept="image/*"
+        ref={fileInputRef}
+        onChange={handleImageUpload}
+        className="hidden"
+      />
     </div>
   );
 }

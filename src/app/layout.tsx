@@ -40,11 +40,11 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <div className="md:hidden">
-              <Toaster richColors position="top-center" />
+              <Toaster richColors position="top-center" closeButton />
             </div>
 
             <div className="hidden md:block">
-              <Toaster richColors position="top-right" />
+              <Toaster richColors position="top-right" closeButton />
             </div>
             <RoleWrapper>
               <Navbar />

@@ -5,6 +5,7 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import TextAlign from "@tiptap/extension-text-align";
 import Highlight from "@tiptap/extension-highlight";
+import Image from "@tiptap/extension-image";
 import MenuBar from "./menu-bar";
 
 const RichTextEditor = forwardRef((_, ref) => {
@@ -24,6 +25,14 @@ const RichTextEditor = forwardRef((_, ref) => {
         },
       }),
       Highlight,
+      Image.configure({
+        inline: false, // change to true if you want inline images
+        allowBase64: true, // helpful for quick testing with base64 paste
+        HTMLAttributes: {
+          class: "rounded-md max-w-full h-auto", // Tailwind styling
+        },
+      }),
+
       TextAlign.configure({
         types: ["heading", "paragraph"],
       }),
