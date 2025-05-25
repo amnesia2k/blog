@@ -10,6 +10,7 @@ import MobileSidebar from "../mobile-sidebar";
 import { useEffect, useRef, useState } from "react";
 import { ClerkLoaded, SignInButton, UserButton, useUser } from "@clerk/nextjs";
 import { Button } from "../ui/button";
+import BookmarkButton from "../bookmark-button";
 // import UploadWidget from "../upload-widget";
 
 const navbarLinks = [
@@ -81,71 +82,76 @@ export default function Navbar() {
           </span>
         </Link>
 
-        <nav className="hidden md:flex items-center space-x-6">
-          {navbarLinks.map((link) => (
-            <Link
-              key={link?.id}
-              href={link?.href}
-              className={`hover:text-blue-400 transition-colors ${
-                pathname === link?.href ? "text-blue-600 font-bold" : ""
-              }`}
-            >
-              {link?.name}
-            </Link>
-          ))}
-        </nav>
+        <div className="flex items-center gap-x-5">
+          <nav className="hidden md:flex items-center space-x-5">
+            {navbarLinks.map((link) => (
+              <Link
+                key={link?.id}
+                href={link?.href}
+                className={`transition-colors ${
+                  pathname === link?.href
+                    ? "text-blue-600 font-bold"
+                    : "hover:text-blue-400"
+                }`}
+              >
+                {link?.name}
+              </Link>
+            ))}
+          </nav>
 
-        <div className="flex items-center space-x-2">
-          <div className="hidden md:flex items-center space-x-2">
-            <ModeToggle />
-          </div>
+          <div className="flex items-center space-x-2">
+            <div className="hidden md:flex items-center space-x-2">
+              <BookmarkButton />
+              <ModeToggle />
+            </div>
 
-          <ClerkLoaded>
-            {user ? (
-              <div className="flex items-center space-x-2">
-                <UserButton
-                  appearance={{
-                    elements: {
-                      avatarBox: "outline-none",
-                      userButtonPopoverCard: "!mx-2",
-                    },
-                  }}
-                >
-                  {user?.unsafeMetadata?.role === "author" && (
-                    <UserButton.MenuItems>
-                      <UserButton.Link
-                        label="New Post"
-                        labelIcon={<Plus size={15} />}
-                        href="/create"
-                      />
-                    </UserButton.MenuItems>
-                  )}
-                </UserButton>
+            <ClerkLoaded>
+              {user ? (
+                <div className="flex items-center space-x-2">
+                  <UserButton
+                    appearance={{
+                      elements: {
+                        avatarBox: "outline-none",
+                        userButtonPopoverCard: "!mx-2",
+                      },
+                    }}
+                  >
+                    {user?.unsafeMetadata?.role === "author" && (
+                      <UserButton.MenuItems>
+                        <UserButton.Link
+                          label="New Post"
+                          labelIcon={<Plus size={15} />}
+                          href="/create"
+                        />
+                      </UserButton.MenuItems>
+                    )}
+                  </UserButton>
 
-                <div className="hidden md:block text-xs">
-                  <p className="italic">Welcome Back,</p>
-                  <p className="font-bold">{user?.fullName}</p>
+                  <div className="hidden md:block text-xs">
+                    <p className="italic">Welcome Back,</p>
+                    <p className="font-bold">{user?.fullName}</p>
+                  </div>
                 </div>
-              </div>
-            ) : (
-              <SignInButton mode="modal">
-                <Button
-                  variant="ghost"
-                  className="rounded-full border w-10 h-10 cursor-pointer"
-                >
-                  <User />
-                </Button>
-              </SignInButton>
-            )}
-          </ClerkLoaded>
+              ) : (
+                <SignInButton mode="modal">
+                  <Button
+                    variant="ghost"
+                    className="rounded-full border w-10 h-10 cursor-pointer"
+                  >
+                    <User />
+                  </Button>
+                </SignInButton>
+              )}
+            </ClerkLoaded>
 
-          <button
-            type="button"
-            onClick={toggleMenu}
-            className="md:hidden cursor-pointer"
-          >
-            <Menu size={30} />
-          </button>
+            <button
+              type="button"
+              onClick={toggleMenu}
+              className="md:hidden cursor-pointer"
+            >
+              <Menu size={30} />
+            </button>
+          </div>
         </div>
       </div>
 
