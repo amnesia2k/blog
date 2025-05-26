@@ -1,33 +1,119 @@
-# Create T3 App
+# 🚀 MetaBlog: Your Next.js Blogging Platform 🖋️
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+Welcome to MetaBlog, a modern and feature-rich blogging platform built with Next.js! Share your thoughts, stories, and ideas with the world using our intuitive and powerful platform.
 
-## What's next? How do I make an app with this?
+## ✨ Features
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+- **✍️ Rich Text Editor:** Create stunning content with our integrated rich text editor.
+- **🎨 Theme Toggle:** Switch between light and dark modes for a comfortable reading experience.
+- **📱 Mobile Responsive:** Enjoy a seamless experience on any device.
+- **🔒 User Authentication:** Secure user authentication with Clerk.
+- **🏷️ Tagging System:** Organize your posts with a flexible tagging system.
+- **📊 Categories:** Easily categorize your blogs for better navigation.
+- **🖼️ Image Uploads:** Upload images directly to your posts.
+- **🔖 Bookmarking:** Save your favorite posts for later.
+- **🔄 Social Sharing:** Share your posts on social media with ease.
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+## 🛠️ Installation
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+Get MetaBlog up and running on your local machine with these simple steps:
 
-## Learn More
+1.  **Clone the Repository:**
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+    ```bash
+    git clone https://github.com/amnesia2k/blog.git
+    cd blog
+    ```
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+2.  **Install Dependencies:**
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+    ```bash
+    pnpm install
+    ```
 
-## How do I deploy this?
+3.  **Set up your .env file**
+    Duplicate `.env.example` to `.env` and fill the required variables:
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+    ```bash
+    cp .env.example .env
+    ```
 
-![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/amnesia2k/blog?utm_source=oss&utm_medium=github&utm_campaign=amnesia2k%2Fblog&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)
+4.  **Database Setup:**
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/66eb3da5-3bae-4c0d-aa77-061e323232d5/deploy-status)](https://app.netlify.com/projects/blog-amnesia/deploys)
+    ```bash
+    pnpm db:push
+    pnpm db:generate
+    pnpm prisma db seed
+    ```
+
+5.  **Run the Development Server:**
+
+    ```bash
+    pnpm dev
+    ```
+
+    Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## 💻 Usage
+
+<details>
+<summary><b>Creating a New Post</b></summary>
+
+1.  **Sign In:** Ensure you have an author role to create new posts.
+2.  **Navigate to Create:** Click on the "New Post" button in the user menu.
+3.  **Fill the Form:** Enter the title, slug, excerpt, category, and tags.
+4.  **Write Content:** Use the rich text editor to create engaging content.
+5.  **Publish:** Click the "Publish Post" button to share your masterpiece.
+
+</details>
+
+<details>
+<summary><b>Becoming an Author</b></summary>
+
+1.  **Sign In:** Ensure you have an account to start.
+2.  **Click "Become an Author":** Button is located in the footer.
+3.  **Fill the Form:** Enter display name, bio, and socials links.
+4.  **Submit:** Click "Submit Application".
+</details>
+
+## 🚀 Technologies Used
+
+| Technology                                    | Description                                                                                                            |
+| :-------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------- |
+| [Next.js](https://nextjs.org/)                | The React Framework for Production                                                                                     |
+| [TypeScript](https://www.typescriptlang.org/) | TypeScript is a strongly typed programming language that builds on JavaScript, giving you better tooling at any scale. |
+| [Prisma](https://www.prisma.io/)              | Next-generation ORM for Node.js & TypeScript                                                                           |
+| [Tailwind CSS](https://tailwindcss.com/)      | A utility-first CSS framework packed with classes that can be composed to build any design, directly in your markup.   |
+| [Clerk](https://clerk.com/)                   | Complete user management, authentication, and authorization, purpose-built for React and Next.js                       |
+| [Radix UI](https://www.radix-ui.com/)         | Unstyled, accessible components for building high-quality design systems and web apps.                                 |
+| [Lucide React](https://lucide.dev/)           | Beautifully simple, pixel-perfect icons                                                                                |
+| [Tiptap](https://tiptap.dev/)                 | A renderless and extendable rich text editor for Vue.js                                                                |
+| [Cloudinary](https://cloudinary.com/)         | End-to-end media management solution for websites and apps.                                                            |
+| [Biome](https://biomejs.dev/)                 | A tool for high-performance formatting, linting, and more for JavaScript, TypeScript, JSON, and CSS.                   |
+| [Inngest](https://www.inngest.com/)           | Event-driven background jobs for Next.js                                                                               |
+| [Sonner](https://sonner.emilkowalski.com/)    | An opinionated toast component for React.                                                                              |
+
+## 🤝 Contributing
+
+Contributions are always welcome! Here’s how you can help:
+
+- 🐛 **Report Bugs:** Submit detailed bug reports to help us improve.
+- ✨ **Suggest Features:** Share your ideas for new features and enhancements.
+- 💻 **Submit Pull Requests:** Contribute code changes to fix issues or add new features.
+
+Please follow these guidelines when contributing:
+
+- Follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification.
+- Write clear, maintainable code with appropriate comments.
+- Test your changes thoroughly before submitting a pull request.
+
+## 📜 License
+
+This project is licensed under the [MIT License](LICENSE).
+
+## 🧑‍💻 Author Info
+
+- **Author:** amnesia2k
+  - [Social Media](https://x.com/@ola_the_dev)
+
+[![Readme was generated by Dokugen](https://img.shields.io/badge/Readme%20was%20generated%20by-Dokugen-brightgreen)](https://www.npmjs.com/package/dokugen)
