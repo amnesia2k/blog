@@ -31,9 +31,10 @@ export default function FeaturedPost({ post }: { post: Post }) {
 
           <p>{post?.excerpt}</p>
 
-          <button type="button">
+          {/* uncomment later */}
+          {/* <button type="button">
             <Link href={`/blogs/${post?.slug}`}>Read More</Link>
-          </button>
+          </button> */}
         </div>
       </div>
     </div>
