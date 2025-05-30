@@ -134,7 +134,7 @@ export default function BecomeAuthor() {
           </div>
 
           {formState.error && (
-            <p className="text-sm text-red-500">{formState.error}</p>
+            <p className="text-sm text-destructive">{formState.error}</p>
           )}
 
           <SheetFooter>
