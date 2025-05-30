@@ -69,16 +69,19 @@ export default function Navbar() {
     <header className="py-4 shadow-xs">
       <div className="max-w-[1200px] mx-auto flex items-center justify-between">
         <Link href="/" className="flex items-center space-x-2">
-          <div className="relative h-8 w-8">
+          {/* <div className="relative h-8 w-8">
             <Image
               src="/logo.svg"
               alt="MetaBlog Logo"
               fill
               className="object-contain"
             />
-          </div>
+          </div> */}
           <span className="text-xl font-bold">
-            Meta<span className="text-blue-600">Blog</span>
+            Meta
+            <span className="text-secondary dark:text-secondary-foreground">
+              Blog
+            </span>
           </span>
         </Link>
 
@@ -90,8 +93,8 @@ export default function Navbar() {
                 href={link?.href}
                 className={`transition-colors ${
                   pathname === link?.href
-                    ? "text-blue-600 font-bold"
-                    : "hover:text-blue-400"
+                    ? "text-secondary font-bold dark:text-secondary-foreground"
+                    : "hover:text-secondary-foreground/50"
                 }`}
               >
                 {link?.name}

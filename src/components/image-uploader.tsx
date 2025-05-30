@@ -74,7 +74,7 @@ const ImageUploader = forwardRef<ImageUploaderRef, ImageUploaderProps>(
         className={cn(
           "border-2 border-dashed rounded-md p-6 text-center cursor-pointer",
           isDragActive
-            ? "border-blue-500 bg-blue-50"
+            ? "border-primary bg-blue-50"
             : "border-gray-300 hover:border-gray-400"
         )}
       >

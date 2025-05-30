@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Post } from "~@/types/blog";
 import { Card, CardContent } from "./ui/card";
+import { buttonVariants } from "./ui/button";
 
 export default function PostCard({ post }: { post: Post }) {
   return (
@@ -14,7 +15,7 @@ export default function PostCard({ post }: { post: Post }) {
           className="object-cover"
         />
         <div className="absolute top-3 left-3">
-          <span className="inline-block bg-blue-600 text-white text-xs px-2 py-1 rounded-full">
+          <span className="inline-block bg-secondary-foreground text-white text-xs px-2 py-1 rounded-full">
             {post.category}
           </span>
         </div>
@@ -22,7 +23,7 @@ export default function PostCard({ post }: { post: Post }) {
 
       <CardContent className="p-4">
         <Link href={`/blogs/${post.slug}`}>
-          <h3 className="text-lg font-semibold mb-2 hover:text-blue-600 transition-colors line-clamp-2">
+          <h3 className="text-lg font-semibold mb-2 hover:text-secondary dark:hover:text-secondary-foreground transition-colors line-clamp-2">
             {post.title}
           </h3>
         </Link>
@@ -38,7 +39,8 @@ export default function PostCard({ post }: { post: Post }) {
           </div>
           <Link
             href={`/author/${post.author.username}`}
-            className="hover:text-blue-600"
+            // className="hover:text-blue-600"
+            className={buttonVariants({ variant: "link" })}
           >
             {post.author.name}
           </Link>

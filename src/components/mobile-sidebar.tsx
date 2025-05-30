@@ -103,8 +103,10 @@ export default function MobileSidebar({
               <Link
                 key={link.id}
                 href={link.href}
-                className={`w-full text-center transition-colors hover:text-blue-400 ${
-                  pathname === link?.href ? "text-blue-600 font-bold" : ""
+                className={`w-full text-center transition-colors ${
+                  pathname === link?.href
+                    ? "text-secondary dark:text-secondary-foreground font-bold"
+                    : ""
                 }`}
                 onClick={onClose}
               >
